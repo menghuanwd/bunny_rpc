@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/menghuanwd/bunny_rpc'
   spec.license       = 'MIT'
 
-  spec.add_dependency 'bunny', '~> 2.3.0'
+  spec.add_dependency 'bunny', '~> 2.3'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'exe'
