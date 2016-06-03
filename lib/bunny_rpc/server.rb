@@ -1,9 +1,8 @@
 module BunnyRpc
   class Server
-    attr_accessor :reply_correlation_id, :reply_to
+    attr_accessor :reply_correlation_id, :reply_to, :queue_name
 
-    def initialize(queue_name, options={})
-      @queue_name = queue_name
+    def initialize(options={})
       @options = options
     end
 
@@ -15,7 +14,10 @@ module BunnyRpc
       )
     end
 
-    def subscribe
+    def subscribe(queue_name)
+      raise 'no queue name' if queue_name.nil?
+
+      @queue_name = queue_name
       queue.subscribe(block: true) do |_, properties, payload|
         @reply_to = properties.reply_to
         @reply_correlation_id = properties.correlation_id

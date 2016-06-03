@@ -24,22 +24,28 @@ Or install it yourself as:
 
 ### Client
 
+```
 require 'bunny_rpc'
 
 client = BunnyRpc::Client.new
 
-result = client.publish('playload')
+client.publish('okokokokok', 'queue1')
+
+client.close
+```
 
 ### Server
 
+```
 require 'bunny_rpc'
 
-client = BunnyRpc::Server.new('queue1')
+server = BunnyRpc::Server.new
 
-client.subscribe do |data|
+server.subscribe('queue1') do |data|
   puts data
 
   payload = 'get it !'
 
-  client.publish(payload)
+  server.publish(payload)
 end
+```
