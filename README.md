@@ -22,12 +22,24 @@ Or install it yourself as:
 
 ## Usage
 
-Client
+### Client
+
+require 'bunny_rpc'
 
 client = BunnyRpc::Client.new
 
 result = client.publish('playload')
 
-Server
+### Server
 
-server = BunnyRpc::Server.new
+require 'bunny_rpc'
+
+client = BunnyRpc::Server.new('queue1')
+
+client.subscribe do |data|
+  puts data
+
+  payload = 'get it !'
+
+  client.publish(payload)
+end
