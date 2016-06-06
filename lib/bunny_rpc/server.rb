@@ -22,7 +22,7 @@ module BunnyRpc
         @reply_to = properties.reply_to
         @reply_correlation_id = properties.correlation_id
 
-        yield payload
+        publish(yield payload)
       end
     end
 

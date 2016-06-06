@@ -42,12 +42,12 @@ server = BunnyRpc::Server.new
 server.subscribe('queue1') do |data|
   puts data
 
-  payload = 'get it !'
-
-  server.publish(payload)
+  'get it !'
 end
+
+the last block body is the return body.
 ```
 
 ## TODO
 
-* 添加超时机制
+* Time Out
