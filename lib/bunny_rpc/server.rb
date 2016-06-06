@@ -1,7 +1,5 @@
 module BunnyRpc
   class Server
-    attr_accessor :reply_correlation_id, :reply_to, :queue_name
-
     def initialize(options={})
       @options = options
     end

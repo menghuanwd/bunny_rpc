@@ -2,12 +2,12 @@ require 'bunny'
 
 module BunnyRpc
   class Client
-    attr_reader :payload, :correlation_id
-
     def initialize(options={})
       @options = options
       @mutex = Mutex.new
-      @cv = ConditionVariable.new
+      @timeout = options[:timeout] || 5
+      @condition_variable = ConditionVariable.new
+      @correlation_id = correlation_id
     end
 
     def publish(body, queue_name)
@@ -38,11 +38,22 @@ module BunnyRpc
     end
 
     def add_lock
-      @mutex.synchronize { @cv.wait(@mutex) }
+      @mutex.synchronize do
+        expire_time = Time.now + @timeout
+        loop do
+           if @payload.nil?
+             remaining = expire_time - Time.now
+             raise(Timeout::Error, "Waited #{@timeout} seconds") if(remaining <= 0)
+           else
+             @condition_variable.wait(@mutex, remaining)
+             return
+           end
+         end
+      end
     end
 
     def del_lock
-      @mutex.synchronize { @cv.signal }
+      @mutex.synchronize { @condition_variable.signal }
     end
 
     def connect

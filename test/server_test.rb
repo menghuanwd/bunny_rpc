@@ -8,10 +8,6 @@ class TestClient < Minitest::Test
       @server = BunnyRpc::Server.new
     end
 
-    it 'connect ok' do
-      skip 'connect ！'
-    end
-
     it 'server response' do
       @server.subscribe('queue1') do |data|
         puts data
