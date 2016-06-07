@@ -5,7 +5,7 @@ module BunnyRpc
     def initialize(options={})
       @options = options
       @mutex = Mutex.new
-      @timeout = options[:timeout] || 5
+      @timeout = options.fetch(:timeout, 5)
       @condition_variable = ConditionVariable.new
       @correlation_id = correlation_id
     end

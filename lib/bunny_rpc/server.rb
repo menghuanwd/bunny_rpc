@@ -15,8 +15,7 @@ module BunnyRpc
     def subscribe(queue_name)
       raise 'no queue name' if queue_name.nil?
 
-      @queue_name = queue_name
-      queue.subscribe(block: true) do |_, properties, payload|
+      queue(queue_name).subscribe(block: true) do |_, properties, payload|
         @reply_to = properties.reply_to
         @reply_correlation_id = properties.correlation_id
 
@@ -39,8 +38,8 @@ module BunnyRpc
       @exchange ||= channel.default_exchange
     end
 
-    def queue
-      @queue ||= channel.queue(@queue_name, exclusive: true)
+    def queue(queue_name)
+      @queue ||= channel.queue(queue_name, exclusive: true)
     end
 
   end
